@@ -19,29 +19,48 @@ namespace ConsoleApp133
 
         public Student(int id, string firstName, string lastName, double gpa, string major,
                       DateTime birthDate, DateTime regDate, int currentYear, bool scholarship)
-                      : base(id, firstName, lastName)
         {
+            Person_ADD(id, firstName, lastName);
             GPA = gpa;
             Major = major;
             BirthDate = birthDate;
             RegistrationDate = regDate;
             CurrentYear = currentYear;
             HasScholarship = scholarship;
-            Courses = new string[10]; // Array for courses
+            Courses = new string[10]; 
         }
 
-        public virtual double CalculateFees()
+        public override void Person_ADD(int id, string firstName, string lastName)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+        }
+        public double CalculateFees()
         {
             if (HasScholarship)
             {
-                return 0; // Scholarship student pays no fees
+                return 0; 
             }
             else
             {
-                double registrationFee = 4000000; // Base registration fee
-                double transportationFee = 1000000; // Transportation fee
+                double registrationFee = 4000000; 
+                double transportationFee = 1000000;
 
-                // 9% increase after first year
+
+                //double test1 = 0;
+                //for (int i = 0; i < CurrentYear; i++)
+                //{
+                //    test1 = test1 + registrationFee * 0.09;
+                //}
+
+                //double test2 = 0;
+                //for (int i = 0; i < CurrentYear; i++)
+                //{
+                //    test2 = registrationFee * 0.09;
+                //    registrationFee = registrationFee + test2;
+                //}
+
                 for (int i = 1; i < CurrentYear; i++)
                 {
                     registrationFee = registrationFee * 1.09;
@@ -50,34 +69,48 @@ namespace ConsoleApp133
                 return registrationFee + transportationFee;
             }
         }
+
+       
     }
 
     public class Teacher : Person
     {
         public double MonthlySalary { get; set; }
         public string[] TeachingCourses { get; set; }
+        public double WorkHour { get; set; }
         public bool IsHourly { get; set; }
-        public int ExtraHours { get; set; }
+        public double ExtraHours { get; set; }
 
-        public Teacher(int id, string firstName, string lastName, double salary, bool hourly)
-                      : base(id, firstName, lastName)
+        public Teacher(int id, string firstName, string lastName, double salary, bool hourly , double exHours)
         {
+            Person_ADD(id, firstName, lastName);
             MonthlySalary = salary;
             IsHourly = hourly;
-            TeachingCourses = new string[10]; // Array for courses
-            ExtraHours = 0;
+            TeachingCourses = new string[10]; 
+            ExtraHours = exHours;
+        }
+        public Teacher(int id, string firstName, string lastName, double hoursWork, bool hourly)
+        {
+            Person_ADD(id, firstName, lastName);
+            WorkHour = hoursWork;
+            IsHourly = hourly;
+            TeachingCourses = new string[10];
+        }
+        public override void Person_ADD(int id, string firstName, string lastName)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
-        // Calculate monthly income
         public virtual double CalculateMonthlyIncome()
         {
             if (IsHourly)
             {
-                return MonthlySalary; // Hourly teacher
+                return WorkHour * 25000; 
             }
             else
             {
-                // Monthly teacher + extra hours
                 return MonthlySalary + (ExtraHours * 25000);
             }
         }

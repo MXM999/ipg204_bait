@@ -49,13 +49,11 @@ namespace ConsoleApp133
             }
         }
 
-        // Get total number of students
         public int GetTotalStudents()
         {
             return studentCount;
         }
 
-        // Get number of scholarship students
         public int GetScholarshipStudents()
         {
             int count = 0;
@@ -69,7 +67,6 @@ namespace ConsoleApp133
             return count;
         }
 
-        // Find student and display courses
         public void PrintStudentCourses(int studentId, string lastName)
         {
             for (int i = 0; i < studentCount; i++)
@@ -79,7 +76,7 @@ namespace ConsoleApp133
                     Console.WriteLine("Courses for student: " + students[i].FirstName + " " + students[i].LastName);
                     for (int j = 0; j < students[i].Courses.Length; j++)
                     {
-                        if (!string.IsNullOrEmpty(students[i].Courses[j]))
+                        if (students[i].Courses[j] != null) // !string.IsNullOrEmpty(students[i].Courses[j])
                         {
                             Console.WriteLine("- " + students[i].Courses[j]);
                         }
@@ -90,10 +87,8 @@ namespace ConsoleApp133
             throw new UniversityException("Student not found");
         }
 
-        // Top 10 students in second year
         public void PrintTopSecondYearStudents()
         {
-            // Sort students by GPA
             for (int i = 0; i < studentCount - 1; i++)
             {
                 for (int j = i + 1; j < studentCount; j++)
@@ -119,7 +114,6 @@ namespace ConsoleApp133
             }
         }
 
-        // Display teacher income
         public void PrintTeacherIncome(int teacherId)
         {
             for (int i = 0; i < teacherCount; i++)
