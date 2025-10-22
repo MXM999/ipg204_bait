@@ -10,62 +10,52 @@ namespace ConsoleApp133
     {
         public static void Main(string[] args)
         {
-            UniversityManager university = new UniversityManager(100, 50);
+            UniversityManager university = new UniversityManager(100, 10);
 
             InitializeSampleData(university);
 
-            bool exit = false;
-            while (!exit)
+            bool exit = true;
+            while (exit)
             {
                 ShowMenu();
                 string choice = Console.ReadLine();
 
-                try
+                switch (choice)
                 {
-                    switch (choice)
-                    {
-                        case "1":
-                            Console.WriteLine("Total registered students: " + university.GetTotalStudents());
-                            break;
-                        case "2":
-                            Console.WriteLine("Number of scholarship students: " + university.GetScholarshipStudents());
-                            break;
-                        case "3":
-                            Console.Write("Enter student ID: ");
-                            int studentId = int.Parse(Console.ReadLine());
-                            Console.Write("Enter student last name: ");
-                            string lastName = Console.ReadLine();
-                            university.PrintStudentCourses(studentId, lastName);
-                            break;
-                        case "4":
-                            university.PrintTopSecondYearStudents();
-                            break;
-                        case "5":
-                            RegisterNewStudent(university);
-                            break;
-                        case "6":
-                            AddNewTeacher(university);
-                            break;
-                        case "7":
-                            Console.Write("Enter teacher ID: ");
-                            int teacherId = int.Parse(Console.ReadLine());
-                            university.PrintTeacherIncome(teacherId);
-                            break;
-                        case "8":
-                            exit = true;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice");
-                            break;
-                    }
+                    case "1":
+                        Console.WriteLine("Total registered students: " + university.GetTotalStudents());
+                        break;
+                    case "2":
+                        Console.WriteLine("Number of scholarship students: " + university.GetScholarshipStudents());
+                        break;
+                    case "3":
+                        Console.Write("Enter student ID: ");
+                        int studentId = int.Parse(Console.ReadLine());
+                        Console.Write("Enter student last name: ");
+                        string lastName = Console.ReadLine();
+                        university.PrintStudentCourses(studentId, lastName);
+                        break;
+                    case "4":
+                        university.PrintTopSecondYearStudents();
+                        break;
+                    case "5":
+                        RegisterNewStudent(university);
+                        break;
+                    case "6":
+                        AddNewTeacher(university);
+                        break;
+                    case "7":
+                        Console.Write("Enter teacher ID: ");
+                        int teacherId = int.Parse(Console.ReadLine());
+                        university.PrintTeacherIncome(teacherId);
+                        break;
+                    case "8":
+                        exit = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice");
+                        break;
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex.Message);
-                }
-
-                Console.WriteLine("\nPress any key to continue...");
-                Console.ReadKey();
             }
         }
 
@@ -99,7 +89,7 @@ namespace ConsoleApp133
             university.AddStudent(student1);
             university.AddStudent(student2);
 
-            Teacher teacher1 = new Teacher(101, "Dr. Mohammed", "Al-Khaled", 500000, false , 5);
+            Teacher teacher1 = new Teacher(101, "Dr. Mohammed", "Al-Khaled", 500000, false, 5);
             teacher1.TeachingCourses[0] = "IPG202";
 
             Teacher teacher2 = new Teacher(102, "Dr. Sara", "Hussein", 30, true);
@@ -125,10 +115,27 @@ namespace ConsoleApp133
             int year = int.Parse(Console.ReadLine());
             Console.Write("Has scholarship? (yes/no): ");
             bool scholarship = Console.ReadLine().ToLower() == "yes";
-            
 
-            Student newStudent = new Student(id, firstName, lastName, gpa, major,
-                                           DateTime.Now, DateTime.Now, year, scholarship);
+
+            Student newStudent = new Student(id, firstName, lastName, gpa, major, DateTime.Now, DateTime.Now, year, scholarship);
+
+            Console.WriteLine("Add the courses");
+
+            for (int i = 0; i < newStudent.Courses.Length; i++)
+            {
+                newStudent.Courses[i] = Console.ReadLine();
+                Console.WriteLine("Add more : ");
+                string ask = Console.ReadLine();
+                if (ask == "yes")
+                {
+                    continue;
+                }
+                else if (ask == "no")
+                {
+                    break;
+                }
+            }
+
             university.AddStudent(newStudent);
             Console.WriteLine("Student registered successfully");
         }
@@ -141,14 +148,51 @@ namespace ConsoleApp133
             string firstName = Console.ReadLine();
             Console.Write("Last name: ");
             string lastName = Console.ReadLine();
-            Console.Write("Monthly salary: ");
-            double salary = double.Parse(Console.ReadLine());
-            Console.Write("Is hourly teacher? (yes/no): ");
-            bool hourly = Console.ReadLine().ToLower() == "yes";
 
-            Teacher newTeacher = new Teacher(id, firstName, lastName, salary, hourly);
-            university.AddTeacher(newTeacher);
-            Console.WriteLine("Teacher added successfully");
+            Console.WriteLine("Choies type teacher 1-Monthly salary 2-only hourly ");
+            string choies = Console.ReadLine();
+            if (choies == "1")
+            {
+                Console.Write("Monthly salary: ");
+                double salary = double.Parse(Console.ReadLine());
+                bool hourly = false;
+                Console.WriteLine("How many ExtraHours");
+                double extraHours = double.Parse(Console.ReadLine());
+
+                Teacher newTeacher = new Teacher(id, firstName, lastName, salary, hourly, extraHours);
+                ADD_tech_cours(newTeacher);
+                university.AddTeacher(newTeacher);
+                Console.WriteLine("Teacher added successfully");
+            }
+            else if (choies == "2")
+            {
+                Console.Write("How many hours: ");
+                double hours = double.Parse(Console.ReadLine());
+                bool hourly = true;
+                Teacher newTeacher = new Teacher(id, firstName, lastName, hours, hourly);
+                ADD_tech_cours(newTeacher);
+                university.AddTeacher(newTeacher);
+                Console.WriteLine("Teacher added successfully");
+            }
+        }
+        static void ADD_tech_cours(Teacher Tech)
+        {
+            Console.WriteLine("Add the Teacher courses");
+
+            for (int i = 0; i < Tech.TeachingCourses.Length; i++)
+            {
+                Tech.TeachingCourses[i] = Console.ReadLine();
+                Console.WriteLine("Add more : ");
+                string ask = Console.ReadLine();
+                if (ask == "yes")
+                {
+                    continue;
+                }
+                else if (ask == "no")
+                {
+                    break;
+                }
+            }
         }
     }
 }

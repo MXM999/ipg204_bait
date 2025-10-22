@@ -21,7 +21,6 @@ namespace ConsoleApp133
             teacherCount = 0;
         }
 
-        // Add new student
         public void AddStudent(Student student)
         {
             if (studentCount < students.Length)
@@ -35,7 +34,6 @@ namespace ConsoleApp133
             }
         }
 
-        // Add new teacher
         public void AddTeacher(Teacher teacher)
         {
             if (teacherCount < teachers.Length)
